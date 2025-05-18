@@ -1,0 +1,20 @@
+@startuml
+== Use Case 2: Email Triage and Smart Reply ==
+actor User
+participant "Swisper App" as App2
+participant "Swisper Backend" as Backend2
+participant "Prompt Preprocessor" as Pre2
+participant "Outlook Tool" as Outlook
+participant "LLM (GPT-4o)" as LLM2
+
+User -> App2 : "Help me manage my emails, prioritize and suggest replies"
+App2 -> Backend2 : Forward prompt
+Backend2 -> Pre2 : Analyze intent
+Pre2 -> Outlook : Fetch unread/important emails
+Outlook --> Pre2 : Emails
+Pre2 -> LLM2 : Summarize and classify urgency
+LLM2 -> Backend2 : Summary + Suggested actions
+Backend2 -> Outlook : Mark as read, flag urgent
+Backend2 --> App2 : Return suggested replies
+App2 --> User : Read out summaries and responses
+@enduml

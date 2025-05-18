@@ -1,0 +1,39 @@
+
+@startuml Memory_Management_Sequence
+title Memory Use in User Interaction
+
+actor User
+participant "Swisper App (Client)" as Client
+participant "API Gateway" as Gateway
+participant "Prompt Preprocessor" as Preprocessor
+participant "Memory Store" as Memory
+participant "Contract Engine" as Contract
+participant "LLM Orchestrator" as LLM
+
+== New Prompt Submitted ==
+
+User -> Client : Sends prompt
+Client -> Gateway : POST /prompt
+
+Gateway -> Preprocessor : Analyze input
+Preprocessor -> Memory : Retrieve session memory
+Memory --> Preprocessor : Relevant facts, prior tasks
+
+Preprocessor -> Contract : Update or launch contract flow?
+alt Structured flow
+    Contract -> Memory : Load contract state
+    Contract -> LLM : Get response using memory + rules
+    LLM --> Contract : Reply
+    Contract -> Memory : Persist updated state
+    Contract --> Gateway : Response
+else Freeform prompt
+    Preprocessor -> LLM : Construct prompt + inject memory
+    LLM --> Preprocessor : Response
+    Preprocessor -> Memory : Optionally persist summary
+    Preprocessor --> Gateway : Response
+end
+
+Gateway --> Client : Render assistant reply
+Client --> User : Assistant response shown
+
+@enduml

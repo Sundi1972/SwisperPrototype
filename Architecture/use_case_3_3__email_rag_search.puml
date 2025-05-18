@@ -1,0 +1,19 @@
+@startuml
+== Use Case 3: Email RAG Search ==
+actor User
+participant "Swisper App" as App3
+participant "Swisper Backend" as Backend3
+participant "Prompt Preprocessor" as Pre3
+participant "Vector DB" as VectorDB
+participant "LLM (GPT-4o)" as LLM3
+
+User -> App3 : "Did I have a conversation with HSBC about advisory architecture?"
+App3 -> Backend3 : Prompt
+Backend3 -> Pre3 : Intent Classification
+Pre3 -> VectorDB : Semantic search on embedded email memory
+VectorDB --> Pre3 : Top matching chunks
+Pre3 -> LLM3 : Synthesize results
+LLM3 --> Backend3 : Summary + insights
+Backend3 --> App3 : Deliver findings
+App3 --> User : Read summary
+@enduml

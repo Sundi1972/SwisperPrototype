@@ -1,0 +1,23 @@
+@startuml
+== Use Case 4: Contract-Based Purchase (Graphics Card) ==
+actor User
+participant "Swisper App" as App4
+participant "Swisper Backend" as Backend4
+participant "Prompt Preprocessor" as Pre4
+participant "Contract Engine" as Contract
+participant "Google Shopping Tool" as Shop
+participant "LLM (GPT-4o)" as LLM4
+
+User -> App4 : "Find me the best RTX 4070 under 450 CHF"
+App4 -> Backend4 : Prompt
+Backend4 -> Pre4 : Intent = Purchase
+Pre4 -> Contract : Start purchase contract
+Contract -> Shop : Search product
+Shop --> Contract : Product list
+Contract -> LLM4 : Ask clarifying questions if needed
+LLM4 --> Contract : User preference answers
+Contract -> Shop : Refine search
+Contract --> Backend4 : Best result
+Backend4 --> App4 : Proposal
+App4 --> User : Offer best product
+@enduml

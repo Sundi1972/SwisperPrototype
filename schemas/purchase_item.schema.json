@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swisper.ai/schemas/purchase_item.json",
+  "title": "PurchaseItemContract",
+  "description": "A structured contract to support item purchasing workflows.",
+  "type": "object",
+  "required": [
+    "contract_type",
+    "version",
+    "parameters",
+    "subtasks",
+    "success_criteria"
+  ],
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "purchase_item",
+      "description": "Defines the type of contract"
+    },
+    "version": {
+      "type": "number",
+      "description": "Version number of the contract schema"
+    },
+    "description": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object",
+      "required": [
+        "product"
+      ],
+      "properties": {
+        "product": {
+          "type": "string"
+        },
+        "price_limit": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "delivery_by": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "preference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "preferences": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "constraints": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "must_match_model": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "must_confirm_with_user": {
+          "type": "boolean"
+        },
+        "allow_auto_purchase": {
+          "type": "boolean"
+        },
+        "max_total_price": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "subtasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "results": {
+            "type": "array"
+          },
+          "output": {
+            "type": "object"
+          },
+          "response": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "success_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "order_confirmed": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,20 @@
+@startuml 
+
+' Use Case 1: Web Search for Factual Knowledge
+actor User
+participant "Swisper App" as App
+participant "Swisper Backend" as Backend
+participant "Prompt Preprocessor" as Pre
+participant "Web Search Tool" as Search
+participant "LLM (GPT-4o)" as LLM
+
+User -> App : "Who are all the ministers in the new German government?"
+App -> Backend : Forward prompt
+Backend -> Pre : Analyze intent
+Pre -> Search : Trigger web search
+Search -> Pre : Return web results
+Pre -> LLM : "Summarize and extract relevant structured facts"
+LLM --> Backend : Structured answer
+Backend --> App : Return result
+App --> User : Final Answer
+@enduml

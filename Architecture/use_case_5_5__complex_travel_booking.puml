@@ -1,0 +1,27 @@
+@startuml
+== Use Case 5: Complex Travel Booking ==
+actor User
+participant "Swisper App" as App5
+participant "Swisper Backend" as Backend5
+participant "Prompt Preprocessor" as Pre5
+participant "Contract Engine" as Contract5
+participant "Flights API" as Flights
+participant "Hotels API" as Hotels
+participant "Events API" as Events
+participant "LLM (GPT-4o)" as LLM5
+
+User -> App5 : "Book me a trip to London with flight, hotel and events"
+App5 -> Backend5 : Prompt
+Backend5 -> Pre5 : Intent = complex planning
+Pre5 -> Contract5 : Launch travel planning flow
+Contract5 -> Flights : Search flights
+Contract5 -> Hotels : Search hotels
+Contract5 -> Events : Search events
+Contract5 -> LLM5 : Ask preferences if unclear (dates, price range)
+LLM5 --> Contract5 : User clarifications
+Contract5 --> Backend5 : Structured itinerary plan
+Backend5 --> App5 : Show results
+App5 --> User : Display plan and get confirmation
+
+@enduml
+@enduml

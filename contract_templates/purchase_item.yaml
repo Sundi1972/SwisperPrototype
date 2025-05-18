@@ -1,0 +1,48 @@
+contract_type: purchase_item
+version: 1.0
+description: Template for executing a product purchase.
+
+parameters:
+  product: null
+  price_limit: null
+  delivery_by: null
+  preference: null
+  preferences: []
+  must_match_model: false       # ✅ New field added for exact match control
+  constraints: {}
+
+constraints:
+  must_confirm_with_user: true
+  allow_auto_purchase: false
+  max_total_price: null
+
+subtasks:
+  - id: search_product
+    type: search
+    status: pending
+
+  # clarify_preferences will be dynamically inserted if needed
+
+  - id: filter_results
+    type: filter
+    status: pending
+
+  - id: check_compatibility
+    type: reasoning
+    status: pending
+
+  - id: select_product
+    type: rank_and_select
+    status: pending
+
+  - id: confirm_order
+    type: ask_user
+    prompt: Shall I buy the selected product?
+    status: pending
+
+  - id: place_order
+    type: checkout
+    status: pending
+
+success_criteria:
+  - order_confirmed == true
