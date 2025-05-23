@@ -6,3 +6,4 @@ requests>=2.31.0         # For calling external APIs like searchapi.io
 rich>=13.7.0     
 uvicorn[standard]
 fastapi[all]
+farm-haystack
