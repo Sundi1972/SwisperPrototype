@@ -1,0 +1,59 @@
+version: '3.8'
+services:
+  gateway:
+    build:
+      context: . # This refers to the swisper/ directory
+      dockerfile: Dockerfile.gateway
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./gateway:/app/gateway
+      - ./orchestrator:/app/orchestrator
+      - ./contract_engine:/app/contract_engine
+      - ./tool_adapter:/app/tool_adapter
+      - ./haystack_pipeline:/app/haystack_pipeline # Added
+      - ./prompt_preprocessor.py:/app/prompt_preprocessor.py
+      - ./tests:/app/tests
+      - ./docs:/app/docs # Added
+      - ./contract_templates:/app/contract_templates
+      - ./schemas:/app/schemas
+      # For persisting shelve DB. session_store.py uses DB_PATH = "orchestrator_sessions.db"
+      # This will create the .db file (and its variants like .bak, .dat, .dir)
+      # in the WORKDIR of the container, which is /app.
+      # So, we map a file from the host to /app/orchestrator_sessions.db on the container.
+      # Note: Shelve creates multiple files, so mounting a single file might be problematic.
+      # A better approach for shelve is to ensure it writes into a mounted directory.
+      # Let's assume session_store.py is updated to write into /app/db/orchestrator_sessions.db
+      # For now, we'll mount a specific file, acknowledging this limitation.
+      # If session_store.py writes to "orchestrator_sessions.db" (relative path),
+      # and WORKDIR is /app, then this maps correctly.
+      - ./orchestrator_sessions.db:/app/orchestrator_sessions.db # If shelve creates multiple files, this is not ideal.
+      # Consider a directory mount if shelve issues arise: - ./db_data:/app/db_data and ensure session_store.py writes there.
+      # For now, sticking to the conceptual change.
+      - ./tmp:/app/tmp # Added for contract artifacts
+      # The root 'tools' directory is not explicitly mounted here, but it's part of COPY . . in Dockerfile.
+      # If live-reloading of 'tools' is needed and it's outside swisper/ for some reason, it would need a separate mount.
+      # Given current structure, it's under swisper/ and copied.
+    working_dir: /app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY} # Make sure to have a .env file or pass this
+      - LOG_LEVEL=INFO # Or DEBUG for more verbosity
+      - PYTHONPATH=/app
+    command: uvicorn gateway.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app
+    # If you have a .env file in swisper/ for OPENAI_API_KEY, uncomment below:
+    # env_file:
+    #   - .env
+
+# Frontend service is skipped for this subtask as per instructions to focus on backend and Makefile.
+# frontend:
+#   build:
+#     context: ./frontend
+#     dockerfile: Dockerfile.frontend
+#   ports:
+#     - "5173:5173"
+#   volumes:
+#     - ./frontend:/app/frontend
+#     - /app/frontend/node_modules
+#   environment:
+#     - NODE_ENV=development
+#   command: npm run dev

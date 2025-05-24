@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic
+openai
+PyYAML
+jsonschema
+python-multipart
+shelve
+langdetect
+emoji
+farm-haystack[all]
+pytest
+pytest-asyncio

@@ -1,0 +1,29 @@
+{
+  "name": "Swisper MVP Dev",
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
+  "service": "gateway",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "visualstudioexptteam.vscodeintellicode",
+        "github.copilot"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.testing.pytestArgs": [
+          "tests"
+        ],
+        "python.testing.unittestEnabled": false,
+        "python.testing.pytestEnabled": true,
+        "python.analysis.extraPaths": ["/app"]
+      }
+    }
+  },
+  "forwardPorts": [8000],
+  "postCreateCommand": "cd /app && pip install --user -r requirements.txt"
+}

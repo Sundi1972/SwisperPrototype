@@ -27,7 +27,7 @@ export default function SwisperChat() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/swisper/chat", {
+      const response = await fetch("http://localhost:8000/chat", { // MODIFIED URL
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -49,6 +49,46 @@ export default function SwisperChat() {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") handleSend();
   };
+
+  const handleAskDocs = async () => {
+    const ragQuestion = "#rag What is Swisper?";
+    // Temporarily set the input, then call handleSend, then restore input
+    // This is a simple way to reuse the existing handleSend logic.
+    const originalInput = input; 
+    setInput(ragQuestion); 
+    
+    // We need to ensure handleSend uses the updated input value.
+    // Since setInput is async, we pass the value directly to a modified/new send function
+    // For simplicity here, we'll assume handleSend will pick up the new 'input' state
+    // or we create a version of handleSend that takes content.
+    // Let's make a direct call by simulating the state update for `handleSend`.
+    
+    // Simulate messages update that handleSend expects
+    const updatedMessagesWithRag = [...messages, { role: "user", content: ragQuestion }];
+    setMessages(updatedMessagesWithRag);
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:8000/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ messages: updatedMessagesWithRag, session_id: sessionId })
+      });
+
+      const data = await response.json();
+      if (data.reply) {
+        setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
+      }
+    } catch (err) {
+      setMessages(prev => [...prev, { role: "assistant", content: "Something went wrong with RAG query." }]);
+    } finally {
+      setLoading(false);
+      setInput(originalInput); // Restore original input if any
+    }
+  };
+
 
   return (
     <div className="max-w-xl mx-auto p-4 space-y-4 font-sans">
@@ -75,6 +115,14 @@ export default function SwisperChat() {
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           Send
+        </button>
+        <button
+          onClick={handleAskDocs}
+          disabled={loading}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          title="Sends the query '#rag What is Swisper?'"
+        >
+          Ask Docs: What is Swisper?
         </button>
       </div>
     </div>

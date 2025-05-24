@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Mock GPU A (Super Edition)",
+    "brand": "MockBrand",
+    "price": 399.99,
+    "rating": 4.5,
+    "reviews": 150,
+    "link": "http://example.com/mock-gpu-a",
+    "thumbnail": "http://example.com/mock-gpu-a.jpg"
+  },
+  {
+    "name": "Mock GPU B (Basic)",
+    "brand": "MockBrand",
+    "price": 249.50,
+    "rating": 4.1,
+    "reviews": 80,
+    "link": "http://example.com/mock-gpu-b",
+    "thumbnail": "http://example.com/mock-gpu-b.jpg"
+  },
+  {
+    "name": "Mock GPU C (Pro Gamer)",
+    "brand": "AnotherBrand",
+    "price": 599.00,
+    "rating": 4.8,
+    "reviews": 320,
+    "link": "http://example.com/mock-gpu-c",
+    "thumbnail": "http://example.com/mock-gpu-c.jpg"
+  },
+  {
+    "name": "Mock GPU D (Value King)",
+    "brand": "ValueBrand",
+    "price": 199.99,
+    "rating": 4.0,
+    "reviews": 50,
+    "link": "http://example.com/mock-gpu-d",
+    "thumbnail": "http://example.com/mock-gpu-d.jpg"
+  }
+]

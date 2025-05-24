@@ -1,0 +1,4 @@
+This is a sample document for Swisper.
+Swisper is an AI assistant that helps with various tasks.
+It features a contract engine and document Q&A capabilities.
+Haystack is used for the RAG pipeline.

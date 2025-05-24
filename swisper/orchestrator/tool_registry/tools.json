@@ -1,0 +1,16 @@
+[
+  {
+    "name": "mock_google_shopping",
+    "description": "Return static product list based on a query. For testing purposes.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "q": {
+          "type": "string",
+          "description": "The search query for products."
+        }
+      },
+      "required": ["q"]
+    }
+  }
+]
